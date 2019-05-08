@@ -1,0 +1,802 @@
+{
+    "name": "ConnectedCarApplication",
+    "description": " ",
+    "version": "1.0.0",
+    "type": "flogo:app",
+    "appModel": "1.0.0",
+    "resources": [
+        {
+            "id": "flow:GetCustomerInfo",
+            "data": {
+                "name": "GetCustomerInfo",
+                "description": "",
+                "tasks": [
+                    {
+                        "id": "LogMessage",
+                        "name": "LogMessage",
+                        "activity": {
+                            "ref": "git.tibco.com/git/product/ipaas/wi-contrib.git/contributions/General/activity/log",
+                            "settings": {},
+                            "input": {
+                                "Log Level": "INFO",
+                                "flowInfo": false,
+                                "message": ""
+                            },
+                            "output": {},
+                            "mappings": {
+                                "input": [
+                                    {
+                                        "mapTo": "$INPUT['message']",
+                                        "type": "assign",
+                                        "value": "$flow.pathParams.ChasisNo"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": "Return",
+                        "name": "Return",
+                        "activity": {
+                            "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+                            "settings": {},
+                            "input": {
+                                "mappings": [
+                                    {
+                                        "mapTo": "$INPUT['VehicleModel']",
+                                        "type": "literal",
+                                        "value": "X7"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['VehicleMake']",
+                                        "type": "literal",
+                                        "value": "BMW"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['CustomerName']",
+                                        "type": "literal",
+                                        "value": "Mr Atul Toke"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['CustomerEmail']",
+                                        "type": "literal",
+                                        "value": "atul.toke@infosys.com"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['CustomerContact']",
+                                        "type": "literal",
+                                        "value": "9423262791"
+                                    }
+                                ]
+                            },
+                            "output": {}
+                        }
+                    }
+                ],
+                "links": [
+                    {
+                        "id": 1,
+                        "from": "LogMessage",
+                        "to": "Return",
+                        "type": "default"
+                    }
+                ],
+                "metadata": {
+                    "input": [
+                        {
+                            "name": "pathParams",
+                            "type": "complex_object",
+                            "value": {
+                                "value": "",
+                                "metadata": "{\"ChasisNo\":{\"type\":\"string\"}}"
+                            }
+                        },
+                        {
+                            "name": "headers",
+                            "type": "complex_object",
+                            "value": {
+                                "value": "",
+                                "metadata": "{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}}"
+                            }
+                        }
+                    ],
+                    "output": [
+                        {
+                            "name": "VehicleModel",
+                            "type": "string"
+                        },
+                        {
+                            "name": "VehicleMake",
+                            "type": "string"
+                        },
+                        {
+                            "name": "CustomerName",
+                            "type": "string"
+                        },
+                        {
+                            "name": "CustomerEmail",
+                            "type": "string"
+                        },
+                        {
+                            "name": "CustomerContact",
+                            "type": "string"
+                        }
+                    ],
+                    "fe_metadata": {
+                        "input": "{\"type\":\"object\",\"title\":\"ReceiveHTTPMessage\",\"properties\":{\"pathParams\":{\"type\":\"object\",\"properties\":{\"ChasisNo\":{\"type\":\"string\"}},\"required\":[]},\"headers\":{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}}}",
+                        "output": "{\"type\":\"object\",\"title\":\"CustomerInfo\",\"properties\":{\"VehicleModel\":{\"type\":\"string\"},\"VehicleMake\":{\"type\":\"string\"},\"CustomerName\":{\"type\":\"string\"},\"CustomerEmail\":{\"type\":\"string\"},\"CustomerContact\":{\"type\":\"string\"}},\"required\":[]}"
+                    }
+                },
+                "explicitReply": true
+            }
+        },
+        {
+            "id": "flow:CreateSR",
+            "data": {
+                "name": "CreateSR",
+                "description": "",
+                "tasks": [
+                    {
+                        "id": "LiveAppsCreateCase",
+                        "name": "LiveAppsCreateCase",
+                        "activity": {
+                            "ref": "emea-swi-svn.emea.tibco.com/svn/Ariel/tci-liveapps/trunk/LiveApps/activity/create",
+                            "settings": {},
+                            "input": {
+                                "applicationId": "2786",
+                                "artifactId": "12141",
+                                "sandboxId": "2709",
+                                "processName": "CreateCarBreakdownComplaint",
+                                "data": {
+                                    "metadata": "{\"type\":\"object\",\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"properties\":{\"CarBreakdownComplaint\":{\"type\":\"object\",\"properties\":{\"Customer\":{\"type\":\"object\",\"properties\":{\"CustomerName\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"CustomerName\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"41\",\"internalName\":\"CustomerName\"}},\"CustomerEmail\":{\"type\":\"string\",\"format\":\"email\",\"maxLength\":254,\"title\":\"Customer Email\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"55\",\"internalName\":\"CustomerEmail\"}},\"CurrentCustomerLocation\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"CurrentCustomerLocation\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"42\",\"internalName\":\"CurrentCustomerLocation\"}},\"CarModel\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Car Model\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"43\",\"internalName\":\"CarModel\"}},\"CarMake\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Car Make\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"44\",\"internalName\":\"CarMake\"}}}},\"ComplaintTime\":{\"type\":\"string\",\"format\":\"date\",\"title\":\"Complaint Time\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"8\",\"internalName\":\"ComplaintTime\",\"constraints\":{\"type\":\"constraint\",\"initialValue\":\"now\"}}},\"IssueSummary\":{\"type\":\"string\",\"maxLength\":100,\"title\":\"Issue Summary\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"11\",\"internalName\":\"IssueSummary\"}},\"Description\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Description\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"10\",\"internalName\":\"Description\"}},\"CarDiagnostics\":{\"type\":\"object\",\"properties\":{\"EngineStatus\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Engine Status\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"26\",\"internalName\":\"EngineStatus\"}},\"BatteryStatus\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Battery Status\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"31\",\"internalName\":\"BatteryStatus\"}},\"FuelStatus\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Fuel Status\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"32\",\"internalName\":\"FuelStatus\"}},\"PhysicalDamage\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Physical Damage\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"33\",\"internalName\":\"PhysicalDamage\"}},\"OverallHealth\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Overall Health \",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"34\",\"internalName\":\"OverallHealth\"}}}}}}}}",
+                                    "value": "",
+                                    "fe_metadata": "{\"type\":\"object\",\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"properties\":{\"CarBreakdownComplaint\":{\"type\":\"object\",\"properties\":{\"Customer\":{\"type\":\"object\",\"properties\":{\"CustomerName\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"CustomerName\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"41\",\"internalName\":\"CustomerName\"}},\"CustomerEmail\":{\"type\":\"string\",\"format\":\"email\",\"maxLength\":254,\"title\":\"Customer Email\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"55\",\"internalName\":\"CustomerEmail\"}},\"CurrentCustomerLocation\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"CurrentCustomerLocation\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"42\",\"internalName\":\"CurrentCustomerLocation\"}},\"CarModel\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Car Model\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"43\",\"internalName\":\"CarModel\"}},\"CarMake\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Car Make\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"44\",\"internalName\":\"CarMake\"}}}},\"ComplaintTime\":{\"type\":\"string\",\"format\":\"date\",\"title\":\"Complaint Time\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"8\",\"internalName\":\"ComplaintTime\",\"constraints\":{\"type\":\"constraint\",\"initialValue\":\"now\"}}},\"IssueSummary\":{\"type\":\"string\",\"maxLength\":100,\"title\":\"Issue Summary\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"11\",\"internalName\":\"IssueSummary\"}},\"Description\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Description\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"10\",\"internalName\":\"Description\"}},\"CarDiagnostics\":{\"type\":\"object\",\"properties\":{\"EngineStatus\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Engine Status\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"26\",\"internalName\":\"EngineStatus\"}},\"BatteryStatus\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Battery Status\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"31\",\"internalName\":\"BatteryStatus\"}},\"FuelStatus\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Fuel Status\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"32\",\"internalName\":\"FuelStatus\"}},\"PhysicalDamage\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Physical Damage\",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"33\",\"internalName\":\"PhysicalDamage\"}},\"OverallHealth\":{\"type\":\"string\",\"maxLength\":50,\"title\":\"Overall Health \",\"la_metadata\":{\"type\":\"metadata\",\"id\":\"34\",\"internalName\":\"OverallHealth\"}}}}}}}}"
+                                }
+                            },
+                            "output": {
+                                "caseRef": ""
+                            },
+                            "mappings": {
+                                "input": [
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['Description']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.Description"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['IssueSummary']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.IssueSummary"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['ComplaintTime']",
+                                        "type": "expression",
+                                        "value": "string.substringBefore(datetime.currentDate(), \"+\")"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['Customer']['CustomerName']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CustomerName"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['Customer']['CustomerEmail']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CustomerEmail"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['Customer']['CurrentCustomerLocation']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CustomerLocation"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['Customer']['CarModel']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.VehicleModel"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['Customer']['CarMake']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.VehicleMake"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['CarDiagnostics']['EngineStatus']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CarDiagnostics.EngineStatus"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['CarDiagnostics']['BatteryStatus']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CarDiagnostics.BatteryStatus"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['CarDiagnostics']['FuelStatus']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CarDiagnostics.FuelStatus"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['CarDiagnostics']['PhysicalDamage']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CarDiagnostics.PhysicalDamage"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['data']['CarBreakdownComplaint']['CarDiagnostics']['OverallHealth']",
+                                        "type": "assign",
+                                        "value": "$flow.CustomerInfo.CarDiagnostics.OverallHealth"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": "Return",
+                        "name": "Return",
+                        "activity": {
+                            "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+                            "settings": {},
+                            "input": {
+                                "mappings": [
+                                    {
+                                        "mapTo": "$INPUT['CaseNo']",
+                                        "type": "assign",
+                                        "value": "$activity[LiveAppsCreateCase].caseRef"
+                                    }
+                                ]
+                            },
+                            "output": {}
+                        }
+                    }
+                ],
+                "links": [
+                    {
+                        "id": 1,
+                        "from": "LiveAppsCreateCase",
+                        "to": "Return",
+                        "type": "default"
+                    }
+                ],
+                "metadata": {
+                    "input": [
+                        {
+                            "name": "CustomerInfo",
+                            "type": "complex_object",
+                            "value": {
+                                "value": "",
+                                "metadata": "{\"VehicleModel\":{\"type\":\"string\"},\"VehicleMake\":{\"type\":\"string\"},\"CustomerName\":{\"type\":\"string\"},\"CustomerEmail\":{\"type\":\"string\"},\"CustomerContact\":{\"type\":\"string\"},\"CustomerLocation\":{\"type\":\"string\"},\"IssueSummary\":{\"type\":\"string\"},\"Description\":{\"type\":\"string\"},\"CarDiagnostics\":{\"type\":\"object\",\"properties\":{\"EngineStatus\":{\"type\":\"string\"},\"BatteryStatus\":{\"type\":\"string\"},\"FuelStatus\":{\"type\":\"string\"},\"PhysicalDamage\":{\"type\":\"string\"},\"OverallHealth\":{\"type\":\"string\"}}}}"
+                            }
+                        }
+                    ],
+                    "output": [
+                        {
+                            "name": "CaseNo",
+                            "type": "string"
+                        }
+                    ],
+                    "fe_metadata": {
+                        "input": "{\n    \"CustomerInfo\": {\n        \"VehicleModel\": \"string\",\n        \"VehicleMake\": \"string\",\n        \"CustomerName\": \"string\",\n        \"CustomerEmail\": \"string\",\n        \"CustomerContact\": \"string\",\n        \"CustomerLocation\": \"string\",\n        \"IssueSummary\": \"string\",\n        \"Description\": \"String\",\n        \"CarDiagnostics\": {\n            \"EngineStatus\": \"string\",\n            \"BatteryStatus\": \"string\",\n            \"FuelStatus\": \"string\",\n            \"PhysicalDamage\": \"string\",\n            \"OverallHealth\": \"string\"\n        }\n    }\n}",
+                        "output": "{\"type\":\"object\",\"title\":\"CaseInfo\",\"properties\":{\"CaseNo\":{\"type\":\"string\"}},\"required\":[]}"
+                    }
+                },
+                "explicitReply": true
+            }
+        },
+        {
+            "id": "flow:CarBreakDownFlow",
+            "data": {
+                "name": "CarBreakDownFlow",
+                "description": "",
+                "tasks": [
+                    {
+                        "id": "GetCustomerInfo",
+                        "name": "GetCustomerInfo",
+                        "activity": {
+                            "ref": "git.tibco.com/git/product/ipaas/wi-contrib.git/contributions/General/activity/rest",
+                            "settings": {},
+                            "input": {
+                                "Method": "GET",
+                                "Uri": "https://eu-west-1.integration.cloud.tibcoapps.com:443/zrq5glu6fhmr4acrqc6omegqbqwe3ag4/getCustomerInfo/{ChasisNo}",
+                                "requestType": "application/json",
+                                "responseType": "application/json",
+                                "Use certificate for verification": false,
+                                "Server Certificate": "",
+                                "pathParams": {
+                                    "metadata": "{\"type\":\"object\",\"properties\":{\"ChasisNo\":{\"type\":\"string\"}},\"required\":[]}",
+                                    "value": "",
+                                    "fe_metadata": "[{\"parameterName\":\"ChasisNo\",\"type\":\"string\"}]"
+                                },
+                                "headers": {
+                                    "metadata": "{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}",
+                                    "value": "",
+                                    "fe_metadata": "[{\"parameterName\":\"Accept\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Charset\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Encoding\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Type\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Length\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Connection\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Cookie\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Pragma\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false}]"
+                                }
+                            },
+                            "output": {
+                                "responseBody": {
+                                    "metadata": "{\n    \"type\": \"object\",\n    \"title\": \"CustomerInfo\",\n    \"properties\": {\n        \"VehicleModel\": {\n            \"type\": \"string\"\n        },\n        \"VehicleMake\": {\n            \"type\": \"string\"\n        },\n        \"CustomerName\": {\n            \"type\": \"string\"\n        },\n        \"CustomerEmail\": {\n            \"type\": \"string\"\n        },\n        \"CustomerContact\": {\n            \"type\": \"string\"\n        }\n    },\n    \"required\": []\n}",
+                                    "value": "",
+                                    "fe_metadata": "{\n    \"type\": \"object\",\n    \"title\": \"CustomerInfo\",\n    \"properties\": {\n        \"VehicleModel\": {\n            \"type\": \"string\"\n        },\n        \"VehicleMake\": {\n            \"type\": \"string\"\n        },\n        \"CustomerName\": {\n            \"type\": \"string\"\n        },\n        \"CustomerEmail\": {\n            \"type\": \"string\"\n        },\n        \"CustomerContact\": {\n            \"type\": \"string\"\n        }\n    },\n    \"required\": []\n}"
+                                },
+                                "headers": {
+                                    "metadata": "{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}",
+                                    "value": "",
+                                    "fe_metadata": "[{\"parameterName\":\"Accept\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Charset\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Encoding\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Type\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Length\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Connection\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Cookie\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Pragma\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false}]"
+                                },
+                                "error": ""
+                            },
+                            "mappings": {
+                                "input": [
+                                    {
+                                        "mapTo": "$INPUT['pathParams']['ChasisNo']",
+                                        "type": "assign",
+                                        "value": "$flow.ChasisNo"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": "Create_SR_in_LiveApps",
+                        "name": "Create_SR_in_LiveApps",
+                        "activity": {
+                            "ref": "git.tibco.com/git/product/ipaas/wi-contrib.git/contributions/General/activity/rest",
+                            "settings": {},
+                            "input": {
+                                "Method": "POST",
+                                "Uri": "https://eu-west-1.integration.cloud.tibcoapps.com:443/zrq5glu6fhmr4acrqc6omegqbqwe3ag4/CreateSR",
+                                "requestType": "application/json",
+                                "responseType": "application/json",
+                                "Use certificate for verification": false,
+                                "Server Certificate": "",
+                                "headers": {
+                                    "metadata": "{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}",
+                                    "value": "",
+                                    "fe_metadata": "[{\"parameterName\":\"Accept\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Charset\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Encoding\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Type\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Length\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Connection\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Cookie\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Pragma\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false}]"
+                                },
+                                "body": {
+                                    "metadata": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"CustomerInfo\":{\"type\":\"object\",\"properties\":{\"VehicleModel\":{\"type\":\"string\"},\"VehicleMake\":{\"type\":\"string\"},\"CustomerName\":{\"type\":\"string\"},\"CustomerEmail\":{\"type\":\"string\"},\"CustomerContact\":{\"type\":\"string\"},\"CustomerLocation\":{\"type\":\"string\"},\"IssueSummary\":{\"type\":\"string\"},\"Description\":{\"type\":\"string\"},\"CarDiagnostics\":{\"type\":\"object\",\"properties\":{\"EngineStatus\":{\"type\":\"string\"},\"BatteryStatus\":{\"type\":\"string\"},\"FuelStatus\":{\"type\":\"string\"},\"PhysicalDamage\":{\"type\":\"string\"},\"OverallHealth\":{\"type\":\"string\"}}}}}}}",
+                                    "value": "",
+                                    "fe_metadata": "{\n    \"CustomerInfo\": {\n        \"VehicleModel\": \"string\",\n        \"VehicleMake\": \"string\",\n        \"CustomerName\": \"string\",\n        \"CustomerEmail\": \"string\",\n        \"CustomerContact\": \"string\",\n        \"CustomerLocation\": \"string\",\n        \"IssueSummary\": \"string\",\n        \"Description\": \"String\",\n        \"CarDiagnostics\": {\n            \"EngineStatus\": \"String\",\n            \"BatteryStatus\": \"String\",\n            \"FuelStatus\": \"String\",\n            \"PhysicalDamage\": \"String\",    \n            \"OverallHealth\": \"String\"\n        }\n    }\n}"
+                                }
+                            },
+                            "output": {
+                                "responseBody": {
+                                    "metadata": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"CaseNo\":{\"type\":\"string\"}}}",
+                                    "value": "",
+                                    "fe_metadata": "{\n    \"CaseNo\" : \"12345\"\n}"
+                                },
+                                "headers": {
+                                    "metadata": "{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}",
+                                    "value": "",
+                                    "fe_metadata": "[{\"parameterName\":\"Accept\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Charset\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Encoding\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Type\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Length\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Connection\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Cookie\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Pragma\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false}]"
+                                },
+                                "error": ""
+                            },
+                            "mappings": {
+                                "input": [
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['VehicleModel']",
+                                        "type": "assign",
+                                        "value": "$activity[GetCustomerInfo].responseBody.VehicleModel"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['VehicleMake']",
+                                        "type": "assign",
+                                        "value": "$activity[GetCustomerInfo].responseBody.VehicleMake"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CustomerName']",
+                                        "type": "assign",
+                                        "value": "$activity[GetCustomerInfo].responseBody.CustomerName"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CustomerEmail']",
+                                        "type": "assign",
+                                        "value": "$activity[GetCustomerInfo].responseBody.CustomerEmail"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CustomerContact']",
+                                        "type": "assign",
+                                        "value": "$activity[GetCustomerInfo].responseBody.CustomerContact"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CustomerLocation']",
+                                        "type": "assign",
+                                        "value": "$flow.CarLocation"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['IssueSummary']",
+                                        "type": "assign",
+                                        "value": "$flow.IssueSummary"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['Description']",
+                                        "type": "assign",
+                                        "value": "$flow.Description"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CarDiagnostics']['EngineStatus']",
+                                        "type": "assign",
+                                        "value": "$flow.CarDiagnostics.EngineStatus"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CarDiagnostics']['BatteryStatus']",
+                                        "type": "assign",
+                                        "value": "$flow.CarDiagnostics.BatteryStatus"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CarDiagnostics']['FuelStatus']",
+                                        "type": "assign",
+                                        "value": "$flow.CarDiagnostics.FuelStatus"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CarDiagnostics']['PhysicalDamage']",
+                                        "type": "assign",
+                                        "value": "$flow.CarDiagnostics.PhysicalDamage"
+                                    },
+                                    {
+                                        "mapTo": "$INPUT['body']['CustomerInfo']['CarDiagnostics']['OverallHealth']",
+                                        "type": "assign",
+                                        "value": "$flow.CarDiagnostics.OverallHealth"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": "Return",
+                        "name": "Return",
+                        "activity": {
+                            "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+                            "settings": {},
+                            "input": {
+                                "mappings": [
+                                    {
+                                        "mapTo": "$INPUT['CaseRef']",
+                                        "type": "expression",
+                                        "value": "string.concat(\"Hi, Your case has been registered. Your case no is : \", $activity[Create_SR_in_LiveApps].responseBody.CaseNo)"
+                                    }
+                                ]
+                            },
+                            "output": {}
+                        }
+                    }
+                ],
+                "links": [
+                    {
+                        "id": 1,
+                        "from": "GetCustomerInfo",
+                        "to": "Create_SR_in_LiveApps",
+                        "type": "default"
+                    },
+                    {
+                        "id": 2,
+                        "from": "Create_SR_in_LiveApps",
+                        "to": "Return",
+                        "type": "default"
+                    }
+                ],
+                "metadata": {
+                    "input": [
+                        {
+                            "name": "ChasisNo",
+                            "type": "string"
+                        },
+                        {
+                            "name": "CarLocation",
+                            "type": "string"
+                        },
+                        {
+                            "name": "IssueSummary",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Description",
+                            "type": "string"
+                        },
+                        {
+                            "name": "CarDiagnostics",
+                            "type": "complex_object",
+                            "value": {
+                                "value": "",
+                                "metadata": "{\"EngineStatus\":{\"type\":\"string\"},\"BatteryStatus\":{\"type\":\"string\"},\"FuelStatus\":{\"type\":\"string\"},\"PhysicalDamage\":{\"type\":\"string\"},\"OverallHealth\":{\"type\":\"string\"}}"
+                            }
+                        }
+                    ],
+                    "output": [
+                        {
+                            "name": "CaseRef",
+                            "type": "string"
+                        }
+                    ],
+                    "fe_metadata": {
+                        "input": "{\n    \"ChasisNo\": \"string\",\n    \"CarLocation\": \"string\",\n    \"IssueSummary\": \"string\",\n    \"Description\": \"string\",\n    \"CarDiagnostics\": {\n        \"EngineStatus\": \"string\",\n        \"BatteryStatus\": \"string\",\n        \"FuelStatus\": \"string\",\n        \"PhysicalDamage\": \"string\",\n        \"OverallHealth\": \"string\"\n    }\n}",
+                        "output": "{\"type\":\"object\",\"title\":\"CustomerInfo\",\"properties\":{\"CaseRef\":{\"type\":\"string\"}},\"required\":[]}"
+                    }
+                },
+                "explicitReply": true
+            }
+        }
+    ],
+    "triggers": [
+        {
+            "ref": "git.tibco.com/git/product/ipaas/wi-contrib.git/contributions/General/trigger/rest",
+            "name": "ReceiveHTTPMessage",
+            "description": "",
+            "settings": {
+                "port": 9999
+            },
+            "id": "ReceiveHTTPMessage",
+            "handlers": [
+                {
+                    "description": "",
+                    "settings": {
+                        "Method": "GET",
+                        "Path": "/getCustomerInfo/{ChasisNo}",
+                        "OutputValidation": false
+                    },
+                    "outputs": {
+                        "pathParams": {
+                            "metadata": "{\"type\":\"object\",\"properties\":{\"ChasisNo\":{\"type\":\"string\"}},\"required\":[]}",
+                            "value": "",
+                            "fe_metadata": "[{\"parameterName\":\"ChasisNo\",\"type\":\"string\"}]"
+                        },
+                        "headers": {
+                            "metadata": "{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}",
+                            "value": "",
+                            "fe_metadata": "[{\"parameterName\":\"Accept\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Charset\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Encoding\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Type\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Length\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Connection\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Cookie\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Pragma\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false}]"
+                        }
+                    },
+                    "action": {
+                        "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+                        "data": {
+                            "flowURI": "res://flow:GetCustomerInfo"
+                        },
+                        "mappings": {
+                            "input": [],
+                            "output": [
+                                {
+                                    "mapTo": "$INPUT['data']['VehicleModel']",
+                                    "type": "assign",
+                                    "value": "$.VehicleModel"
+                                },
+                                {
+                                    "mapTo": "$INPUT['data']['CustomerName']",
+                                    "type": "assign",
+                                    "value": "$.CustomerName"
+                                },
+                                {
+                                    "mapTo": "$INPUT['data']['CustomerEmail']",
+                                    "type": "assign",
+                                    "value": "$.CustomerEmail"
+                                },
+                                {
+                                    "mapTo": "$INPUT['data']['CustomerContact']",
+                                    "type": "assign",
+                                    "value": "$.CustomerContact"
+                                },
+                                {
+                                    "mapTo": "$INPUT['data']['VehicleMake']",
+                                    "type": "assign",
+                                    "value": "$.VehicleMake"
+                                }
+                            ]
+                        }
+                    },
+                    "reply": {
+                        "code": 200,
+                        "data": {
+                            "metadata": "{\n    \"type\": \"object\",\n    \"title\": \"CustomerInfo\",\n    \"properties\": {\n        \"VehicleModel\": {\n            \"type\": \"string\"\n        },\n        \"VehicleMake\": {\n            \"type\": \"string\"\n        },\n        \"CustomerName\": {\n            \"type\": \"string\"\n        },\n        \"CustomerEmail\": {\n            \"type\": \"string\"\n        },\n        \"CustomerContact\": {\n            \"type\": \"string\"\n        }\n    },\n    \"required\": []\n}",
+                            "value": "",
+                            "fe_metadata": "{\n    \"type\": \"object\",\n    \"title\": \"CustomerInfo\",\n    \"properties\": {\n        \"VehicleModel\": {\n            \"type\": \"string\"\n        },\n        \"VehicleMake\": {\n            \"type\": \"string\"\n        },\n        \"CustomerName\": {\n            \"type\": \"string\"\n        },\n        \"CustomerEmail\": {\n            \"type\": \"string\"\n        },\n        \"CustomerContact\": {\n            \"type\": \"string\"\n        }\n    },\n    \"required\": []\n}"
+                        },
+                        "message": "any"
+                    }
+                },
+                {
+                    "description": "",
+                    "settings": {
+                        "Method": "POST",
+                        "Path": "/CreateSR",
+                        "OutputValidation": false
+                    },
+                    "outputs": {
+                        "headers": {
+                            "metadata": "{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}",
+                            "value": "",
+                            "fe_metadata": "[{\"parameterName\":\"Accept\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Charset\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Encoding\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Type\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Length\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Connection\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Cookie\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Pragma\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false}]"
+                        },
+                        "body": {
+                            "metadata": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"CustomerInfo\":{\"type\":\"object\",\"properties\":{\"VehicleModel\":{\"type\":\"string\"},\"VehicleMake\":{\"type\":\"string\"},\"CustomerName\":{\"type\":\"string\"},\"CustomerEmail\":{\"type\":\"string\"},\"CustomerContact\":{\"type\":\"string\"},\"CustomerLocation\":{\"type\":\"string\"},\"IssueSummary\":{\"type\":\"string\"},\"Description\":{\"type\":\"string\"},\"CarDiagnostics\":{\"type\":\"object\",\"properties\":{\"EngineStatus\":{\"type\":\"string\"},\"BatteryStatus\":{\"type\":\"string\"},\"FuelStatus\":{\"type\":\"string\"},\"PhysicalDamage\":{\"type\":\"string\"},\"OverallHealth\":{\"type\":\"string\"}}}}}}}",
+                            "value": "",
+                            "fe_metadata": "{\n    \"CustomerInfo\": {\n        \"VehicleModel\": \"string\",\n        \"VehicleMake\": \"string\",\n        \"CustomerName\": \"string\",\n        \"CustomerEmail\": \"string\",\n        \"CustomerContact\": \"string\",\n        \"CustomerLocation\": \"string\",\n        \"IssueSummary\": \"string\",\n        \"Description\": \"String\",\n        \"CarDiagnostics\": {\n            \"EngineStatus\": \"String\",\n            \"BatteryStatus\": \"String\",\n            \"FuelStatus\": \"String\",\n            \"PhysicalDamage\": \"String\",    \n            \"OverallHealth\": \"String\"\n        }\n    }\n}"
+                        }
+                    },
+                    "action": {
+                        "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+                        "data": {
+                            "flowURI": "res://flow:CreateSR"
+                        },
+                        "mappings": {
+                            "input": [
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['VehicleModel']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.VehicleModel"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['VehicleMake']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.VehicleMake"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CustomerName']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CustomerName"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CustomerEmail']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CustomerEmail"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CustomerContact']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CustomerContact"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CustomerLocation']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CustomerLocation"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['IssueSummary']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.IssueSummary"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['Description']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.Description"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CarDiagnostics']['EngineStatus']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CarDiagnostics.EngineStatus"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CarDiagnostics']['BatteryStatus']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CarDiagnostics.BatteryStatus"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CarDiagnostics']['FuelStatus']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CarDiagnostics.FuelStatus"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CarDiagnostics']['PhysicalDamage']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CarDiagnostics.PhysicalDamage"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CustomerInfo']['CarDiagnostics']['OverallHealth']",
+                                    "type": "assign",
+                                    "value": "$.body.CustomerInfo.CarDiagnostics.OverallHealth"
+                                }
+                            ],
+                            "output": [
+                                {
+                                    "mapTo": "$INPUT['data']['CaseNo']",
+                                    "type": "assign",
+                                    "value": "$.CaseNo"
+                                }
+                            ]
+                        }
+                    },
+                    "reply": {
+                        "code": 200,
+                        "data": {
+                            "metadata": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"CaseNo\":{\"type\":\"string\"}}}",
+                            "value": "",
+                            "fe_metadata": "{\n    \"CaseNo\" : \"12345\"\n}"
+                        },
+                        "message": "any"
+                    }
+                },
+                {
+                    "description": "",
+                    "settings": {
+                        "Method": "POST",
+                        "Path": "/CarBreakdown",
+                        "OutputValidation": false
+                    },
+                    "outputs": {
+                        "headers": {
+                            "metadata": "{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]}",
+                            "value": "",
+                            "fe_metadata": "[{\"parameterName\":\"Accept\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Charset\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Accept-Encoding\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Type\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Content-Length\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Connection\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Cookie\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false},{\"parameterName\":\"Pragma\",\"type\":\"string\",\"repeating\":\"false\",\"required\":\"false\",\"visible\":false}]"
+                        },
+                        "body": {
+                            "metadata": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"ChasisNo\":{\"type\":\"string\"},\"CarLocation\":{\"type\":\"string\"},\"IssueSummary\":{\"type\":\"string\"},\"Description\":{\"type\":\"string\"},\"CarDiagnostics\":{\"type\":\"object\",\"properties\":{\"EngineStatus\":{\"type\":\"string\"},\"BatteryStatus\":{\"type\":\"string\"},\"FuelStatus\":{\"type\":\"string\"},\"PhysicalDamage\":{\"type\":\"string\"},\"OverallHealth\":{\"type\":\"string\"}}}}}",
+                            "value": "",
+                            "fe_metadata": "{\n    \"ChasisNo\": \"string\",\n    \"CarLocation\": \"string\",\n    \"IssueSummary\": \"string\",\n    \"Description\": \"string\",\n    \"CarDiagnostics\": {\n        \"EngineStatus\": \"string\",\n        \"BatteryStatus\": \"string\",\n        \"FuelStatus\": \"string\",\n        \"PhysicalDamage\": \"string\",\n        \"OverallHealth\": \"string\"\n    }\n}"
+                        }
+                    },
+                    "action": {
+                        "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+                        "data": {
+                            "flowURI": "res://flow:CarBreakDownFlow"
+                        },
+                        "mappings": {
+                            "input": [
+                                {
+                                    "mapTo": "$INPUT['ChasisNo']",
+                                    "type": "assign",
+                                    "value": "$.body.ChasisNo"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CarLocation']",
+                                    "type": "assign",
+                                    "value": "$.body.CarLocation"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CarDiagnostics']['PhysicalDamage']",
+                                    "type": "assign",
+                                    "value": "$.body.CarDiagnostics.PhysicalDamage"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CarDiagnostics']['OverallHealth']",
+                                    "type": "assign",
+                                    "value": "$.body.CarDiagnostics.OverallHealth"
+                                },
+                                {
+                                    "mapTo": "$INPUT['IssueSummary']",
+                                    "type": "assign",
+                                    "value": "$.body.IssueSummary"
+                                },
+                                {
+                                    "mapTo": "$INPUT['Description']",
+                                    "type": "assign",
+                                    "value": "$.body.Description"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CarDiagnostics']['EngineStatus']",
+                                    "type": "assign",
+                                    "value": "$.body.CarDiagnostics.EngineStatus"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CarDiagnostics']['BatteryStatus']",
+                                    "type": "assign",
+                                    "value": "$.body.CarDiagnostics.BatteryStatus"
+                                },
+                                {
+                                    "mapTo": "$INPUT['CarDiagnostics']['FuelStatus']",
+                                    "type": "assign",
+                                    "value": "$.body.CarDiagnostics.FuelStatus"
+                                }
+                            ],
+                            "output": [
+                                {
+                                    "mapTo": "$INPUT['data']['CaseRef']",
+                                    "type": "assign",
+                                    "value": "$.CaseRef"
+                                }
+                            ]
+                        }
+                    },
+                    "reply": {
+                        "code": 200,
+                        "data": {
+                            "metadata": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"CaseRef\":{\"type\":\"string\"}}}",
+                            "value": "",
+                            "fe_metadata": "{\n    \"CaseRef\" : \"12345\"\n}"
+                        },
+                        "message": "any"
+                    }
+                }
+            ]
+        }
+    ],
+    "properties": [],
+    "contrib": "W3sicmVmIjoiZ2l0LnRpYmNvLmNvbS9naXQvcHJvZHVjdC9pcGFhcy93aS1jb250cmliLmdpdC9jb250cmlidXRpb25zL0dlbmVyYWwiLCJzM2xvY2F0aW9uIjoiVGliY28vR2VuZXJhbCJ9LHsicmVmIjoiZW1lYS1zd2ktc3ZuLmVtZWEudGliY28uY29tL3N2bi9BcmllbC90Y2ktbGl2ZWFwcHMvdHJ1bmsvTGl2ZUFwcHMiLCJzM2xvY2F0aW9uIjoiVGliY28vTGl2ZUFwcHMifV0=",
+    "fe_metadata": "UEsDBAoAAAAIAMdKqE6rqSRGFQAAABMAAAAIAAAAYXBwLmpzb26rViopykxPTy1yy8kvL1ayio6tBQBQSwECFAAKAAAACADHSqhOq6kkRhUAAAATAAAACAAAAAAAAAAAAAAAAAAAAAAAYXBwLmpzb25QSwUGAAAAAAEAAQA2AAAAOwAAAAAA"
+}
