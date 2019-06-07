@@ -1,0 +1,233 @@
+<html>
+  <head>
+    <title>Acceleration Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/highcharts-more.js"></script>
+    
+  </head>
+  <body>
+	<div id="container" style="min-width: 310px; max-width: 400px; height: 300px; margin: 0 auto"></div>
+	<br/>
+	<br/>
+	<div id = "sendEventToFlogo" style="text-align:center"><button>Send Event to Flogo</button></div><br/>
+	<!--div id="accelerometer">Waiting for accelerometer...</div-->
+	<br/>
+	<br/>
+	<br/>
+	<div id="trigger"></div>
+	<br/>
+	<br/>
+	<!--div id="log">Logs</div>
+	<div id="log2">Logs</div>
+	<br/>
+	<br/>
+	<br/>
+	<div id="geolocation">geolocation details</div-->
+	<script type="text/javascript" charset="utf-8">
+
+    // The watch id references the current `watchAcceleration`
+    var watchID = null;
+	//var watchID2 = null;
+	var speed = 60;
+	var element;
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+	document.getElementById("sendEventToFlogo").addEventListener("click", sendEventToFlogo);
+	function sendEventToFlogo() {
+		document.getElementById("trigger").innerHTML = "sendEventToFlogo";
+		navigator.geolocation.getCurrentPosition(onSuccess2);
+	} 
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        startWatch();
+    }
+
+    // Start watching the acceleration
+    //
+    function startWatch() {
+
+        // Update acceleration every 3 seconds
+        var options = { frequency: 3000 };
+
+        watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+		//watchID2 = navigator.geolocation.watchPosition(onSuccess2, onError, options);
+    }
+
+    // Stop watching the acceleration
+    //
+    function stopWatch() {
+        if (watchID) {
+            navigator.accelerometer.clearWatch(watchID);
+            watchID = null;
+        }
+    }
+
+    // onSuccess: Get a snapshot of the current acceleration
+    //
+    function onSuccess(acceleration) {
+        /*var element = document.getElementById('accelerometer');
+		element.innerHTML = 'Acceleration X: ' + acceleration.x.toFixed(2)         + '<br />' +
+                            'Acceleration Y: ' + acceleration.y.toFixed(2)         + '<br />' +
+                            'Acceleration Z: ' + acceleration.z.toFixed(2)         + '<br />' +
+                            'Timestamp: '      + acceleration.timestamp + '<br />';
+		element = document.getElementById('log');
+		*/
+		speed = (acceleration.z*3.6).toFixed(2);
+		/*element.innerHTML = "Speed is " + speed + '<br />';
+		if (Math.abs(acceleration.x) >3 ||  Math.abs(acceleration.y) >3 || Math.abs(acceleration.z) >12 || Math.abs(acceleration.z) <7){
+			element = document.getElementById('trigger');
+			element.innerHTML = 'Sending event to flogo from '
+			navigator.geolocation.getCurrentPosition(onSuccess2, onError);
+			
+			
+			/*cordova.plugin.http.get('https://eu-west-1.integration.cloud.tibcoapps.com/zrq5glu6fhmr4acrqc6omegqbqwe3ag4/getCustomerInfo/12345', {
+			  id: '12',
+			  message: 'test'
+			}, { Authorization: 'OAuth2: token' }, function(response) {
+			  console.log(response.status);
+			}, function(response) {
+			  console.error(response.error);
+			});
+		}*/
+	}
+
+    // onError: Failed to get the acceleration
+    //
+    function onError() {
+        alert('onError!');
+    }
+	var onSuccess2 = function(position) {
+		document.getElementById("trigger").innerHTML = 'Sending Event to Flogo from <br/> Latitude: '+ position.coords.latitude+ '\n<br/>' +
+					  'Longitude: '         + position.coords.longitude         + '\n';
+        cordova.plugin.http.get('https://eu-west-1.integration.cloud.tibcoapps.com/zrq5glu6fhmr4acrqc6omegqbqwe3ag4/getCustomerInfo/12345', {
+			  id: '12',
+			  message: 'test'
+			}, { Authorization: 'OAuth2: token' }, function(response) {
+			  console.log(response.status);
+			}, function(response) {
+			  console.error(response.error);
+			});
+    };
+
+    
+    Highcharts.chart('container', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+	credits: {
+      enabled: false
+	},
+
+    title: {
+        text: 'Accelerometer'
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 200,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'km/h'
+        },
+        plotBands: [{
+            from: 0,
+            to: 80,
+            color: '#55BF3B' // green
+        }, {
+            from: 80,
+            to: 160,
+            color: '#DDDF0D' // yellow
+        }, {
+            from: 160,
+            to: 200,
+            color: '#DF5353' // red
+        }]
+    },
+
+    series: [{
+        name: 'Speed',
+        data: [80],
+        tooltip: {
+            valueSuffix: ' km/h'
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+			//element = document.getElementById('log2');
+            if (speed > 0 && speed < 200){
+				chart.series[0].points[0].update(Number(speed));
+				//element.innerHTML = "Speed is " + speed + ' From chart API..<br />';
+			}
+			//element.innerHTML = "Speed is " + speed + ' From chart API ..<br />';
+        }, 3000);
+    }
+});
+
+    </script>
+    
+  </body>
+</html>
